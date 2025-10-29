@@ -1,11 +1,9 @@
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,13 +11,11 @@ public class UiApp extends Application {
 
     private final Hotel hotel = new Hotel("Simple Hotel");
 
-    // UI widgets shared across sections
     private final TableView<Room> roomsTable = new TableView<>();
     private final TableView<Reservation> reservationsTable = new TableView<>();
 
     @Override
     public void start(Stage stage) {
-        // seed a few rooms for quick testing
         hotel.addRoom(new Room(101, "Single", 60.0));
         hotel.addRoom(new Room(102, "Double", 85.0));
         hotel.addRoom(new Room(201, "Suite", 150.0));
@@ -47,10 +43,9 @@ public class UiApp extends Application {
 
     private Tab addRoomTab() {
         TextField tfNumber = new TextField(); tfNumber.setPromptText("Room number");
-        TextField tfType = new TextField(); tfType.setPromptText("Room type (Single/Double/Suite)");
+        TextField tfType = new TextField(); tfType.setPromptText("Room type");
         TextField tfPrice = new TextField(); tfPrice.setPromptText("Price per night");
         Button btnAdd = new Button("Add Room");
-
         Label msg = new Label();
 
         btnAdd.setOnAction(e -> {
@@ -58,7 +53,6 @@ public class UiApp extends Application {
                 int number = Integer.parseInt(tfNumber.getText().trim());
                 String type = tfType.getText().trim();
                 double price = Double.parseDouble(tfPrice.getText().trim());
-
                 if (type.isEmpty() || price <= 0) {
                     msg.setText("Invalid inputs.");
                     return;
@@ -68,9 +62,7 @@ public class UiApp extends Application {
                     msg.setText("Room added.");
                     tfNumber.clear(); tfType.clear(); tfPrice.clear();
                     refreshRoomsTable();
-                } else {
-                    msg.setText("Room number already exists.");
-                }
+                } else msg.setText("Room number already exists.");
             } catch (Exception ex) {
                 msg.setText("Please enter valid values (number / price).");
             }
@@ -129,7 +121,7 @@ public class UiApp extends Application {
         form.add(new Label("Check-out:"),0, 3); form.add(dpOut,      1, 3);
         form.add(btnBook, 1, 4); form.add(msg, 1, 5);
 
-        VBox box = new VBox(12, form, titled("Rooms (for reference)", roomsTable));
+        VBox box = new VBox(12, form, titled("Rooms", roomsTable));
         VBox.setVgrow(roomsTable, Priority.ALWAYS);
         return new Tab("Book room", box);
     }
@@ -165,7 +157,6 @@ public class UiApp extends Application {
         Button btnCheck = new Button("Check availability");
         Label msg = new Label();
         TableView<Room> availableTable = new TableView<>();
-
         setupRoomsTable(availableTable);
 
         btnCheck.setOnAction(e -> {
@@ -196,8 +187,6 @@ public class UiApp extends Application {
         return new Tab("Reservations", box);
     }
 
-    // ---------- Helpers ----------
-
     private TitledPane titled(String title, TableView<?> table) {
         var pane = new TitledPane(title, table);
         pane.setCollapsible(false);
@@ -225,11 +214,11 @@ public class UiApp extends Application {
     private void setupRoomsTable(TableView<Room> table) {
         table.getColumns().clear();
         TableColumn<Room, Number> cNum = new TableColumn<>("Number");
-        cNum.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getRoomNumber()));
+        cNum.setCellValueFactory(d -> new javafx.beans.property.SimpleIntegerProperty(d.getValue().getRoomNumber()));
         TableColumn<Room, String> cType = new TableColumn<>("Type");
-        cType.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getRoomType()));
+        cType.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getRoomType()));
         TableColumn<Room, Number> cPrice = new TableColumn<>("Price/night");
-        cPrice.setCellValueFactory(data -> new javafx.beans.property.SimpleDoubleProperty(data.getValue().getPricePerNight()));
+        cPrice.setCellValueFactory(d -> new javafx.beans.property.SimpleDoubleProperty(d.getValue().getPricePerNight()));
         table.getColumns().addAll(cNum, cType, cPrice);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
