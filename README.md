@@ -13,3 +13,15 @@ This is hotel room reservation app.
 git add .
 git commit -m "your message"
 git push origin main
+
+# Make sure you're on main and up to date
+git checkout main
+git pull origin main
+
+# Create a new branch (for example: feature-login)
+git checkout -b feature-login
+
+git add .
+git commit -m "Added login feature"
+
+git push -u origin feature-login
