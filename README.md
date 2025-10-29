@@ -12,3 +12,7 @@ git commit -m "Added  yourfeature"
 
 git push -u origin feature-yourfeature
 
+# run the project
+mvn clean
+mvn javafx:run
+
