@@ -28,3 +28,13 @@ git push -u origin feature-login
 
 
 #this is a test
+#  if we are working on our own branch(feature-signup)
+git checkout feature-signup
+git merge main
+
+or 
+git rebase main
+
+then 
+
+git push
